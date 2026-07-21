@@ -30,10 +30,6 @@ The environment includes a domain controller, Windows 10 workstation, and Window
 - Installed Active Directory Domain Services
 - Created a new Active Directory forest and domain
 
-### Active Directory Domain and Computer Accounts
-
-![Active Directory domain and computer accounts](/Screenshots/ad-comp-con.jpg)
-
 ### DNS Configuration
 
 ![DNS configuration](/Screenshots/dns-config.jpg)
@@ -42,6 +38,9 @@ The environment includes a domain controller, Windows 10 workstation, and Window
 
 ![DHCP configuration](/Screenshots/dhcp-config.jpg)
 
+### Active Directory Domain and Computer Accounts
+
+![Active Directory domain and computer accounts](/Screenshots/ad-comp-con.jpg)
 ### CLIENT1 Domain Membership
 
 ![CLIENT1 domain membership](/Screenshots/Client01.jpg)
