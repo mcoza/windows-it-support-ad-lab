@@ -59,8 +59,14 @@ The environment was verified using:
 
 ## Screenshots
 
-Screenshots will be added showing:
+### Active Directory Computer Accounts
 
-1. Active Directory computer accounts
-2. Member-server network configuration
-3. Successful domain membership
+The domain-joined workstation and member server are visible as computer accounts in Active Directory Users and Computers.
+
+![Active Directory computer accounts](../../screenshots/ad-computer-accounts.png)
+
+### CLIENT1 Domain Membership
+
+CLIENT1 is joined to the `domian.local` Active Directory domain.
+
+![CLIENT1 domain membership](../../screenshots/client1-domain-membership.png)
