@@ -62,16 +62,16 @@ The environment was verified using:
 ### Active Directory Computer Accounts
 
 CLIENT1 and MBR-SRV01 appear as domain computer accounts in Active Directory Users and Computers.
-![ad-comp-con](https://github.com/user-attachments/assets/...)
+![Active Directory computer accounts](/Screenshots/ad-comp-con.jpg)
 
 ### CLIENT1 Domain Membership
 
 CLIENT1 is joined to the `domian.local` Active Directory domain.
 
-![CLIENT1 domain membership](../../Screenshots/Client01.jpg)
+![CLIENT1 domain membership](/Screenshots/Client01.jpg)
 
 ### Member Server Domain Membership
 
 MBR-SRV01 is joined to the `domian.local` Active Directory domain.
 
-![Member server domain membership](../../Screenshots/Mbr-srv.jpg)
+![Member server domain membership](/Screenshots/Mbr-srv.jpg)
