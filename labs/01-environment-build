@@ -1,54 +1,281 @@
-# Active Directory Environment Build
+# Windows Server and Active Directory Environment Build
 
-## Purpose
+## Overview
 
-Build a small Windows enterprise environment for practicing identity management, endpoint support, networking, troubleshooting, and security administration.
+This project documents the deployment of a small Windows enterprise environment using VMware Workstation.
 
-## Systems
+The lab includes a Windows Server domain controller, a domain-joined Windows workstation, and a Windows Server member server. The environment supports centralized authentication, user and computer management, DNS, DHCP, routing, and future Group Policy and access-control exercises.
+
+## Objectives
+
+- Build an isolated Windows domain environment
+- Deploy Active Directory Domain Services
+- Configure DNS and DHCP
+- Join Windows systems to the domain
+- Practice centralized identity administration
+- Develop Windows and network troubleshooting skills
+- Create a foundation for additional IT support and security labs
+
+## Lab Systems
 
 | System | Operating System | Role |
 |---|---|---|
-| Domain Controller | Windows Server 2019 | Active Directory, DNS, DHCP, and authentication |
-| CLIENT1 | Windows 10 | Domain-joined workstation |
+| Domain Controller | Windows Server 2019 | Active Directory Domain Services, DNS, DHCP, authentication, and routing |
+| CLIENT1 | Windows 10 | Domain-joined user workstation |
 | MBR-SRV01 | Windows Server 2022 | Domain-joined member server |
+| Host Computer | Windows | Runs the virtual environment through VMware Workstation |
 
-## Network
+## Network Configuration
 
-- Hypervisor: VMware Workstation
-- Internal network: VMware LAN Segment
-- Internal subnet: 172.16.0.0/24
-- Domain controller provides DNS and DHCP
-- CLIENT1 and MBR-SRV01 receive network configuration through DHCP
+| Setting | Configuration |
+|---|---|
+| Hypervisor | VMware Workstation |
+| Internal network | VMware LAN Segment |
+| LAN segment name | AD-LAB |
+| Internal subnet | `172.16.0.0/24` |
+| Domain controller internal IP | `172.16.0.1` |
+| Internal DNS server | `172.16.0.1` |
+| DHCP server | Domain controller |
+| DHCP client range | `172.16.0.100–172.16.0.200` |
+| Default gateway | `172.16.0.1` |
+| Domain | `domian.local` |
 
-## Work Completed
+> The domain name reflects the name configured in the lab environment.
 
-- Created Windows Server virtual machines in VMware Workstation
-- Installed Windows Server 2019 and Windows Server 2022
-- Installed Active Directory Domain Services
-- Created a new Active Directory forest and domain
-- Configured DNS and DHCP
-- Created domain users
-- Joined CLIENT1 to the domain
-- Joined MBR-SRV01 to the domain
-- Confirmed both computer accounts in Active Directory Users and Computers
-- Verified that the systems received valid IP addresses, gateway, and DNS information
+## Architecture
 
-## Why This Matters
+```text
+                         Internet
+                            |
+                       VMware NAT
+                            |
+                  Windows Server 2019
+                    Domain Controller
+                AD DS / DNS / DHCP / NAT
+                       172.16.0.1
+                            |
+                  VMware LAN Segment
+                         AD-LAB
+                    /             \
+                   /               \
+         Windows 10              Windows Server 2022
+          CLIENT1                   MBR-SRV01
+     Domain Workstation           Member Server
+```
 
-Active Directory provides centralized management of users, computers, authentication, groups, permissions, and security settings.
+## Deployment Process
 
-A domain join creates a computer identity in Active Directory and establishes a trust relationship between the computer and the domain.
+### 1. Created the virtual machines
 
-DNS allows domain members to locate the domain controller and other Active Directory services.
+Virtual machines were created in VMware Workstation for:
 
-DHCP automatically supplies computers with an IP address, subnet mask, gateway, and DNS settings.
+- Windows Server 2019 domain controller
+- Windows 10 client workstation
+- Windows Server 2022 member server
+
+Each virtual machine was assigned appropriate memory, storage, and virtual network adapters.
+
+### 2. Configured the domain controller network
+
+The domain controller was configured with two network connections:
+
+- A VMware NAT connection for external connectivity
+- An internal VMware LAN Segment for communication with domain systems
+
+The internal network adapter was assigned:
+
+```text
+IP address: 172.16.0.1
+Subnet mask: 255.255.255.0
+DNS server: 172.16.0.1
+```
+
+A static IP address was used because domain members must be able to consistently locate the domain controller and DNS service.
+
+### 3. Installed Active Directory Domain Services
+
+The Active Directory Domain Services server role was installed on Windows Server 2019.
+
+The server was then promoted to a domain controller and used to create a new Active Directory forest and domain.
+
+The domain controller provides:
+
+- Centralized authentication
+- User and computer account management
+- Security group management
+- Organizational Unit management
+- Group Policy support
+- Kerberos authentication
+- LDAP directory services
+
+### 4. Configured DNS
+
+DNS was installed with Active Directory Domain Services.
+
+Domain members use the domain controller as their DNS server so they can locate:
+
+- The Active Directory domain
+- Domain controllers
+- Kerberos services
+- LDAP services
+- Other domain resources
+
+DNS is required for reliable Active Directory authentication and domain joins.
+
+### 5. Configured DHCP
+
+The DHCP server role was configured on the domain controller.
+
+The DHCP scope provides domain systems with:
+
+- IP address
+- Subnet mask
+- Default gateway
+- DNS server
+- Domain name information
+
+This allows CLIENT1 and MBR-SRV01 to receive their network configuration automatically.
+
+### 6. Configured routing and external connectivity
+
+Routing and Remote Access Services were configured so the domain controller could route traffic between the isolated internal network and the VMware NAT network.
+
+This design allows lab systems to communicate internally while still receiving external connectivity through the domain controller.
+
+### 7. Joined CLIENT1 to the domain
+
+The Windows 10 workstation was configured to use the domain controller for DNS.
+
+CLIENT1 was then joined to the Active Directory domain.
+
+After restarting, domain credentials could be used to sign in to the workstation.
+
+A computer account for CLIENT1 appeared in Active Directory Users and Computers.
+
+### 8. Joined MBR-SRV01 to the domain
+
+Windows Server 2022 was deployed as a member server.
+
+The server received an internal address through DHCP and was configured to use the domain controller for DNS.
+
+MBR-SRV01 was joined to the domain and restarted.
+
+A computer account for MBR-SRV01 appeared in Active Directory Users and Computers.
 
 ## Verification
 
-The environment was verified by:
+The environment was verified using the following methods.
 
-- Viewing CLIENT1 and MBR-SRV01 in Active Directory Users and Computers
-- Running `ipconfig /all`
-- Signing in with domain credentials
-- Confirming the domain name in Windows Server Manager
-- Confirming communication with the domain controller
+### Network configuration
+
+```cmd
+ipconfig /all
+```
+
+This confirmed:
+
+- Valid internal IP address
+- Correct subnet mask
+- Correct default gateway
+- Domain controller configured as the DNS server
+- DHCP configuration received successfully
+
+### DNS resolution
+
+```cmd
+nslookup domian.local
+```
+
+This confirmed that the client could resolve the Active Directory domain through the domain controller.
+
+### Domain connectivity
+
+```cmd
+ping 172.16.0.1
+```
+
+This confirmed communication with the domain controller.
+
+### Domain membership
+
+Domain membership was verified through:
+
+- Windows System Properties
+- Server Manager
+- Active Directory Users and Computers
+- Successful domain-user sign-in
+
+### Computer accounts
+
+The following computer accounts were confirmed in Active Directory:
+
+- CLIENT1
+- MBR-SRV01
+
+These computer accounts represent the identities of the domain-joined systems.
+
+## Active Directory Concepts Demonstrated
+
+### Centralized identity
+
+Active Directory stores and manages identities for users and computers from a central location.
+
+### Computer authentication
+
+Domain-joined computers have their own Active Directory accounts and authenticate with the domain using computer credentials.
+
+### DNS dependency
+
+Active Directory depends on DNS to locate domain controllers and authentication services.
+
+### DHCP configuration
+
+DHCP automatically provides the required network settings to domain clients.
+
+### Domain membership
+
+Joining a computer to the domain creates a trust relationship between the computer and Active Directory.
+
+### Member server
+
+MBR-SRV01 is managed through the domain but does not function as a domain controller.
+
+## Security Considerations
+
+- The domain controller uses a static internal IP address.
+- Domain systems use the domain controller for DNS.
+- Administrative functions are centralized through Active Directory.
+- The internal lab network is separated from the physical home network.
+- Domain accounts can be disabled without deleting their historical information.
+- Group-based permissions and least privilege will be used in later exercises.
+- Passwords and sensitive credentials are not stored in this repository.
+
+## Skills Demonstrated
+
+- VMware Workstation administration
+- Windows Server installation
+- Active Directory Domain Services deployment
+- Domain controller promotion
+- DNS configuration
+- DHCP configuration
+- Routing and NAT concepts
+- Static and dynamic IPv4 configuration
+- Windows domain joins
+- Computer account administration
+- Windows Server member-server deployment
+- Network verification
+- Technical documentation
+
+## Result
+
+The completed environment provides a functional Windows domain for practicing:
+
+- User and computer administration
+- Organizational Units
+- Security groups
+- Delegated permissions
+- Group Policy
+- File-server permissions
+- Account lifecycle management
+- Windows troubleshooting
+- Identity and access management
