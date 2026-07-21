@@ -69,10 +69,10 @@ CLIENT1 and MBR-SRV01 appear as domain computer accounts in Active Directory Use
 
 CLIENT1 is joined to the `domian.local` Active Directory domain.
 
-![CLIENT1 domain membership](../../Screenshots/Client01.png)
+![CLIENT1 domain membership](../../Screenshots/Client01.jpg)
 
 ### Member Server Domain Membership
 
 MBR-SRV01 is joined to the `domian.local` Active Directory domain.
 
-![Member server domain membership](../../Screenshots/Mbr-srv.png)
+![Member server domain membership](../../Screenshots/Mbr-srv.jpg)
