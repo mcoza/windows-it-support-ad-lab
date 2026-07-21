@@ -122,7 +122,7 @@ The project is designed to demonstrate practical skills relevant to IT support, 
 6. [Windows and Network Troubleshooting](labs/06-troubleshooting)
 7. [IT Support Documentation](documentation)
 8. [Lab Diagrams](diagrams)
-9. [Lab Screenshots](screenshots)
+9. [Lab Screenshots](Screenshots)
 
 Additional project pages will be added as the lab progresses.
 
