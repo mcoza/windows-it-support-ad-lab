@@ -1,49 +1,54 @@
-# windows-it-support-ad-lab
-Hands-on Windows Server, Active Directory, networking, Group Policy, access control, and IT support lab built in VMware Workstation.
-
-
-# Windows Active Directory Environment
+# Active Directory Environment Build
 
 ## Purpose
 
-Build a small enterprise-style Windows environment for practicing identity management, endpoint support, networking, and security administration.
+Build a small Windows enterprise environment for practicing identity management, endpoint support, networking, troubleshooting, and security administration.
 
-## Environment
+## Systems
 
-| System    | Operating System    | Purpose |
-
-| DC01      | Windows Server 2019 | Active Directory, DNS, DHCP, routing |
-
-| CLIENT1   | Windows 10          | Domain-joined workstation |
-
+| System | Operating System | Role |
+|---|---|---|
+| Domain Controller | Windows Server 2019 | Active Directory, DNS, DHCP, and authentication |
+| CLIENT1 | Windows 10 | Domain-joined workstation |
 | MBR-SRV01 | Windows Server 2022 | Domain-joined member server |
 
 ## Network
 
-- VMware Workstation
-- Internal LAN segment
+- Hypervisor: VMware Workstation
+- Internal network: VMware LAN Segment
 - Internal subnet: 172.16.0.0/24
 - Domain controller provides DNS and DHCP
-- Domain: domain.local
+- CLIENT1 and MBR-SRV01 receive network configuration through DHCP
 
 ## Work Completed
 
-- Installed Windows Server
+- Created Windows Server virtual machines in VMware Workstation
+- Installed Windows Server 2019 and Windows Server 2022
 - Installed Active Directory Domain Services
-- Created a new forest and domain
+- Created a new Active Directory forest and domain
 - Configured DNS and DHCP
-- Joined a Windows workstation to the domain
-- Joined a Windows Server member server to the domain
-- Verified computer accounts in Active Directory
+- Created domain users
+- Joined CLIENT1 to the domain
+- Joined MBR-SRV01 to the domain
+- Confirmed both computer accounts in Active Directory Users and Computers
+- Verified that the systems received valid IP addresses, gateway, and DNS information
 
-## Security Relevance
+## Why This Matters
 
-Centralized identity allows administrators to manage users, computers, authentication, permissions, and security settings from one location.
+Active Directory provides centralized management of users, computers, authentication, groups, permissions, and security settings.
+
+A domain join creates a computer identity in Active Directory and establishes a trust relationship between the computer and the domain.
+
+DNS allows domain members to locate the domain controller and other Active Directory services.
+
+DHCP automatically supplies computers with an IP address, subnet mask, gateway, and DNS settings.
 
 ## Verification
 
-- Both computer accounts appear in Active Directory Users and Computers
-- Domain users can sign in to CLIENT1
-- MBR-SRV01 shows membership in domain.local
-- Clients receive valid DHCP and DNS settings
+The environment was verified by:
 
+- Viewing CLIENT1 and MBR-SRV01 in Active Directory Users and Computers
+- Running `ipconfig /all`
+- Signing in with domain credentials
+- Confirming the domain name in Windows Server Manager
+- Confirming communication with the domain controller
