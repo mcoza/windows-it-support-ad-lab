@@ -29,12 +29,26 @@ The environment includes a domain controller, Windows 10 workstation, and Window
 - Installed Windows Server 2019 and Windows Server 2022
 - Installed Active Directory Domain Services
 - Created a new Active Directory forest and domain
-- Configured DNS and DHCP
-- Configured routing between the internal network and VMware NAT
-- Joined CLIENT1 to the domain
-- Joined MBR-SRV01 to the domain
-- Verified both computer accounts in Active Directory Users and Computers
-- Signed in to CLIENT1 using a domain user account
+
+### Active Directory Domain and Computer Accounts
+
+![Active Directory domain and computer accounts](/Screenshots/ad-comp-con.jpg)
+
+### DNS Configuration
+
+![DNS configuration](/Screenshots/dns-config.jpg)
+
+### DHCP Configuration
+
+![DHCP configuration](/Screenshots/dhcp-config.jpg)
+
+### CLIENT1 Domain Membership
+
+![CLIENT1 domain membership](/Screenshots/Client01.jpg)
+
+### MBR-SRV01 Domain Membership
+
+![MBR-SRV01 domain membership](/Screenshots/Mbr-srv.jpg)
 
 ## Verification
 
@@ -57,21 +71,3 @@ The environment was verified using:
 - IPv4 configuration
 - Basic Windows and network troubleshooting
 
-## Screenshots
-
-### Active Directory Computer Accounts
-
-CLIENT1 and MBR-SRV01 appear as domain computer accounts in Active Directory Users and Computers.
-![Active Directory computer accounts](/Screenshots/ad-comp-con.jpg)
-
-### CLIENT1 Domain Membership
-
-CLIENT1 is joined to the `domian.local` Active Directory domain.
-
-![CLIENT1 domain membership](/Screenshots/Client01.jpg)
-
-### Member Server Domain Membership
-
-MBR-SRV01 is joined to the `domian.local` Active Directory domain.
-
-![Member server domain membership](/Screenshots/Mbr-srv.jpg)
