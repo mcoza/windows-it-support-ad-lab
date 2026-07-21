@@ -63,7 +63,7 @@ The environment was verified using:
 
 CLIENT1 and MBR-SRV01 appear as domain computer accounts in Active Directory Users and Computers.
 
-![Active Directory computer accounts](../../../Screenshots/ad-comp.png)
+![Active Directory computer accounts](../../Screenshots/ad-comp-con.png)
 
 ### CLIENT1 Domain Membership
 
