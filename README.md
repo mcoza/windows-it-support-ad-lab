@@ -13,7 +13,9 @@ Build a small enterprise-style Windows environment for practicing identity manag
 | System    | Operating System    | Purpose |
 
 | DC01      | Windows Server 2019 | Active Directory, DNS, DHCP, routing |
+
 | CLIENT1   | Windows 10          | Domain-joined workstation |
+
 | MBR-SRV01 | Windows Server 2022 | Domain-joined member server |
 
 ## Network
