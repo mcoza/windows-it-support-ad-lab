@@ -61,12 +61,18 @@ The environment was verified using:
 
 ### Active Directory Computer Accounts
 
-The domain-joined workstation and member server are visible as computer accounts in Active Directory Users and Computers.
+CLIENT1 and MBR-SRV01 appear as domain computer accounts in Active Directory Users and Computers.
 
-![Active Directory computer accounts](../../screenshots/ad-computer-accounts.png)
+![Active Directory computer accounts](../../Screenshots/ad-comp.png)
 
 ### CLIENT1 Domain Membership
 
 CLIENT1 is joined to the `domian.local` Active Directory domain.
 
-![CLIENT1 domain membership](../../screenshots/client1-domain-membership.png)
+![CLIENT1 domain membership](../../Screenshots/Client01.png)
+
+### Member Server Domain Membership
+
+MBR-SRV01 is joined to the `domian.local` Active Directory domain.
+
+![Member server domain membership](../../Screenshots/Mbr-srv.png)
