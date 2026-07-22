@@ -17,10 +17,48 @@ Created and managed Active Directory users and Organizational Units using both P
 - Verified the accounts in Active Directory Users and Computers
 
 ## PowerShell User Provisioning
-
+```
 The PowerShell script automated repetitive account-provisioning tasks and applied consistent settings to each account.
 
-[View the PowerShell script](create-ad-users.ps1)
+Import-Module ActiveDirectory
+
+# Domain and OU information
+$DomainPath = "DC=domian,DC=local"
+$OUName = "_USERS"
+$OUPath = "OU=_USERS,DC=domian,DC=local"
+
+# Temporary lab password
+$Password = ConvertTo-SecureString "Pa55w.rdPa55w.rd" -AsPlainText -Force
+
+# Create the OU
+New-ADOrganizationalUnit `
+    -Name $OUName `
+    -Path $DomainPath `
+    -ErrorAction SilentlyContinue
+
+# Read one name at a time from names.txt
+foreach ($Name in Get-Content ".\names.txt") {
+
+    $FirstName, $LastName = $Name -split " "
+
+    $Username = (
+        $FirstName.Substring(0, 1) + $LastName
+    ).ToLower()
+
+    New-ADUser `
+        -Name "$FirstName $LastName" `
+        -GivenName $FirstName `
+        -Surname $LastName `
+        -DisplayName "$FirstName $LastName" `
+        -SamAccountName $Username `
+        -UserPrincipalName "$Username@domian.local" `
+        -Path $OUPath `
+        -AccountPassword $Password `
+        -Enabled $true
+
+    Write-Host "Created user: $Username"
+}
+```
 
 ## Skills Demonstrated
 
