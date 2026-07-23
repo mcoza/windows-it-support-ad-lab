@@ -1,25 +1,28 @@
-
 # Active Directory User and OU Management
 
 ## Overview
 
-Created and managed Active Directory users and Organizational Units using both PowerShell automation and Active Directory Users and Computers.
+Provisioned and organized Active Directory accounts using PowerShell automation and Active Directory Users and Computers.
 
 ## Work Completed
 
-- Used PowerShell to create multiple domain user accounts from a list of names
+- Automated bulk user creation from a text file
 - Generated usernames and user principal names
-- Enabled accounts and applied initial account settings
-- Placed the automated accounts in the `_USERS` Organizational Unit
+- Created the `_USERS` Organizational Unit and placed automated accounts inside it
 - Created Sydney, Melbourne, and Brisbane Organizational Units
-- Created contractor accounts and moved them into their assigned OUs
-- Configured user properties such as account expiration and directory attributes
-- Verified the accounts in Active Directory Users and Computers
+- Created and organized contractor accounts by location
+- Configured account expiration and City attributes
+- Verified accounts through Active Directory and a custom LDAP search
+
+## Manual User and OU Management
+
+Created SydneyContractor, MelbourneContractor, and BrisbaneContractor and moved each account into its matching Organizational Unit. SydneyContractor was assigned an expiration date, and each contractor received the appropriate City attribute.
 
 ## PowerShell User Provisioning
-```
-The PowerShell script automated repetitive account-provisioning tasks and applied consistent settings to each account.
 
+The script created multiple accounts with consistent naming, credentials, and OU placement.
+
+```powershell
 Import-Module ActiveDirectory
 
 # Domain and OU information
@@ -27,16 +30,16 @@ $DomainPath = "DC=domian,DC=local"
 $OUName = "_USERS"
 $OUPath = "OU=_USERS,DC=domian,DC=local"
 
-# Temporary lab password
-$Password = ConvertTo-SecureString "Pa55w.rdPa55w.rd" -AsPlainText -Force
+# Prompt for a temporary password
+$Password = Read-Host "Enter temporary password" -AsSecureString
 
-# Create the OU
+# Create the OU if it does not already exist
 New-ADOrganizationalUnit `
     -Name $OUName `
     -Path $DomainPath `
     -ErrorAction SilentlyContinue
 
-# Read one name at a time from names.txt
+# Create one account for each name in names.txt
 foreach ($Name in Get-Content ".\names.txt") {
 
     $FirstName, $LastName = $Name -split " "
@@ -62,24 +65,17 @@ foreach ($Name in Get-Content ".\names.txt") {
 
 ## Skills Demonstrated
 
-- Active Directory user provisioning
+- Active Directory user administration
+- PowerShell user provisioning
 - Organizational Unit management
-- PowerShell automation
-- Bulk account creation
-- User account properties
-- Account placement and verification
+- Account-property configuration
+- LDAP attribute searching
 
 ## Screenshots
 
-### PowerShell User Creation
-
-The script created and enabled multiple Active Directory user accounts.
-
-![PowerShell user creation](/Screenshots/powershell-user-creation.jpg)
-
 ### Bulk-Created User Accounts
 
-The automated accounts were placed in the `_USERS` Organizational Unit.
+The PowerShell-created accounts were placed in the `_USERS` Organizational Unit.
 
 ![Bulk-created Active Directory users](/Screenshots/bulk-created-users.jpg)
 
@@ -87,4 +83,16 @@ The automated accounts were placed in the `_USERS` Organizational Unit.
 
 Contractor accounts were organized into the Sydney, Melbourne, and Brisbane Organizational Units.
 
-![Location users and Organizational Units](/Screenshots/location-users-ous.jpg)
+![Location-based users and OUs](/Screenshots/location-users-ous.jpg)
+
+### Account Expiration
+
+SydneyContractor was configured with an account expiration date.
+
+![SydneyContractor account expiration](/Screenshots/sydney-account-expiration.jpg)
+
+### City Attribute Search
+
+A custom LDAP filter located contractor accounts whose City attribute was set to Sydney, Melbourne, or Brisbane.
+
+![Contractor City attribute search](/Screenshots/city-search.jpg)
