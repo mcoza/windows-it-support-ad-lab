@@ -7,21 +7,31 @@ Created and managed Active Directory security groups to organize user accounts, 
 
 ## Work Completed
 
-- Created security groups for bulk-created and location-based user accounts
-- Added users to security groups through Active Directory Users and Computers
-- Used PowerShell to assign accounts from the `_USERS` Organizational Unit to `GG_Bulk_Users`
-- Organized contractor accounts through location-based group membership
-- Configured nested group membership for broader contractor management
-- Created a delegated administrative group for the Sydney Organizational Unit
-- Delegated password-reset and password-change permissions
-- Verified user and group membership through Active Directory Users and Computers
+ Created security groups for Sydney, Melbourne, and Brisbane contractor accounts
+- Added each contractor account to its matching location-based group
+- Created `GG_Australia_Contractors` to manage all Australian contractor groups together
+- Nested the Sydney, Melbourne, and Brisbane contractor groups inside `GG_Australia_Contractors`
+- Created `GG_Bulk_Users` for PowerShell-provisioned accounts
+- Used PowerShell to add accounts from the `_USERS` Organizational Unit to `GG_Bulk_Users`
+- Created `Sydney Administrators`, `Melbourne Administrators`, and `Brisbane Administrators`
+- Added each contractor account to its matching city administrator group
+- Added all three contractor accounts to the built-in `Protected Users` group
+- Delegated password-reset and forced password-change permissions over each matching city Organizational Unit
 
-## Security Group Management
 
-Security groups were used to manage accounts as collections instead of assigning access or administrative responsibilities directly to individual users.
+## Contractor Group Structure
 
-Location-based contractor groups allowed Sydney, Melbourne, and Brisbane accounts to be managed separately while also supporting broader contractor-group membership.
+The manually created contractor accounts were organized into location-based security groups.
 
+```
+GG_Australia_Contractors
+├── GG_Sydney_Contractors
+│   └── SydneyContractor
+├── GG_Melbourne_Contractors
+│   └── MelbourneContractor
+└── GG_Brisbane_Contractors
+    └── BrisbaneContractor
+```
 ## PowerShell Group Assignment
 
 PowerShell was used to add the user accounts located directly inside the `_USERS` Organizational Unit to the `GG_Bulk_Users` security group.
@@ -44,9 +54,21 @@ Add-ADGroupMember `
 $Users.Count
 
 ```
-## Delegated Administration
 
-A separate administrative group was configured with limited control over the Sydney Organizational Unit. The delegated permissions allowed authorized members to reset user passwords and require a password change without granting full domain-administrator access.
+```
+# Delegated Administration
+    The delegated permissions allowed group members to:
+    Reset user passwords
+    Require a password change at the next sign-in
+Sydney Administrators
+└── SydneyContractor
+
+Melbourne Administrators
+└── MelbourneContractor
+
+Brisbane Administrators
+└── BrisbaneContractor
+```
 
 ## Skills Demonstrated
 
