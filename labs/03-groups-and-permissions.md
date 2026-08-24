@@ -13,7 +13,7 @@ Practice group-based access management and limited administrative delegation in 
 - Used PowerShell to add users from the `_USERS` Organizational Unit to `GG_Bulk_Users`
 - Created city administrator groups for Sydney, Melbourne, and Brisbane
 - Added the matching contractor account to each city administrator group
-- Added the three contractor accounts to the built-in `Protected Users` group
+- Added the three contractor accounts to the built-in `Protected Users` group as part of the security exercise
 - Delegated password-reset and forced-password-change permissions over the matching city Organizational Units
 
 ## Contractor group structure
@@ -72,12 +72,30 @@ Delegated permissions covered:
 - resetting user passwords
 - requiring a password change at the next sign-in
 
+## Lab design note
+
+For this exercise, the same contractor accounts were used both as normal user identities and as members of the delegated administrator groups. That was sufficient to demonstrate OU-scoped delegation and group-based administration, but it is not the design I would use for a production environment.
+
+A stronger production pattern would separate the identities:
+
+```text
+SydneyContractor
+└── standard user account
+
+adm-SydneyContractor
+└── Sydney Administrators
+    └── delegated Sydney OU permissions
+```
+
+Separating normal and privileged identities reduces the impact of compromise of an everyday account and makes privileged activity easier to control and audit. A future iteration of the lab will implement that separation rather than rewriting the original exercise as if it had already been done.
+
 ## Why this matters
 
-This lab connects Active Directory group administration to two practical concepts:
+This lab connects Active Directory group administration to practical access-control concepts:
 
 - **group-based access management** — manage access through groups instead of assigning permissions individually
 - **least privilege** — delegate only the administrative capability required for a specific scope
+- **privileged-account separation** — keep routine user activity separate from administrative activity
 
 ## Skills demonstrated
 
@@ -87,3 +105,4 @@ This lab connects Active Directory group administration to two practical concept
 - Organizational Unit delegation
 - Password-management delegation
 - Least-privilege administration
+- Recognition of privileged identity separation as a production design improvement
