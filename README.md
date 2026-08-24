@@ -1,96 +1,28 @@
-# Windows IT Support and Active Directory Lab
+# Windows IT Support & Active Directory Lab
 
-## Overview
+A hands-on Windows enterprise lab built in VMware Workstation to practice **Windows Server administration, Active Directory, DNS/DHCP, identity management, PowerShell, networking, and troubleshooting**.
 
-This repository documents a hands-on Windows enterprise lab built in VMware Workstation. The environment was created to practice Windows Server administration, Active Directory Domain Services, user and computer management, networking, access control, troubleshooting, and technical documentation.
+This repository documents work completed in the lab with screenshots and short technical write-ups. It represents a personal lab environment, not production or professional work experience.
 
-The project is designed to demonstrate practical skills relevant to IT support, help desk, systems administration, identity and access management, and entry-level cybersecurity roles.
+## Current environment
 
-## Lab Environment
-
-| System | Operating System | Role |
+| System | OS | Role |
 |---|---|---|
-| Domain Controller | Windows Server 2019 | Active Directory Domain Services, DNS, DHCP, authentication, and internal network services |
-| CLIENT1 | Windows 10 | Domain-joined user workstation |
+| Domain Controller | Windows Server 2019 | AD DS, DNS, DHCP, authentication |
+| CLIENT1 | Windows 10 | Domain-joined workstation |
 | MBR-SRV01 | Windows Server 2022 | Domain-joined member server |
-| VMware Workstation | Windows host | Virtualization platform used to run the lab |
+| VMware Workstation | Windows host | Virtualization platform |
 
-## Network Environment
+### Network
 
-- Internal network: VMware LAN Segment
 - Internal subnet: `172.16.0.0/24`
-- Domain controller internal address: `172.16.0.1`
-- Domain members receive IP configuration through DHCP
+- Domain controller: `172.16.0.1`
+- Domain members receive network configuration through DHCP
 - Domain members use the domain controller for DNS
-- The environment uses an isolated virtual network for internal communication
+- Internal communication runs through an isolated VMware network
+- Lab domain: `domian.local` *(original lab name retained)*
 
-## Technologies Used
-
-- VMware Workstation
-- Windows Server 2019
-- Windows Server 2022
-- Windows 10
-- Active Directory Domain Services
-- Active Directory Users and Computers
-- DNS
-- DHCP
-- TCP/IP
-- IPv4 addressing
-- Organizational Units
-- Security groups
-- Group Policy
-- Windows Event Viewer
-- PowerShell
-- Command Prompt
-
-## Skills Demonstrated
-
-### Windows and IT Support
-
-- Installing and configuring Windows operating systems
-- Creating and managing virtual machines
-- Configuring network adapters and IPv4 settings
-- Troubleshooting startup, installation, DNS, DHCP, and connectivity problems
-- Joining workstations and servers to a domain
-- Documenting technical configurations and resolutions
-
-### Active Directory Administration
-
-- Deploying an Active Directory forest and domain
-- Creating and managing user accounts
-- Managing computer accounts
-- Creating Organizational Units
-- Creating and managing security groups
-- Configuring account expiration
-- Disabling user accounts
-- Resetting user passwords
-- Managing user attributes
-- Delegating limited administrative permissions
-- Applying least-privilege concepts
-- Managing domain-joined workstations and member servers
-
-### Networking
-
-- Configuring internal VMware network segments
-- Understanding subnets, gateways, DNS, and DHCP
-- Verifying network configuration with `ipconfig`
-- Testing name resolution with `nslookup`
-- Troubleshooting communication between domain systems
-- Understanding the relationship between DNS and Active Directory
-
-### Security
-
-- Centralized identity and access management
-- Authentication and authorization
-- Account lifecycle management
-- Group-based access control
-- Delegated administration
-- Least privilege
-- Protected Users
-- Network isolation concepts
-- Security logging and verification
-
-## Current Lab Architecture
+## Architecture
 
 ```text
                          Internet
@@ -111,53 +43,80 @@ The project is designed to demonstrate practical skills relevant to IT support, 
      Domain Workstation          Member Server
 ```
 
+## Completed labs
 
-## Lab Projects
+| Lab | What it demonstrates |
+|---|---|
+| [Environment Build](labs/01-environment-build.md) | Windows Server deployment, AD DS, DNS, DHCP, domain joins, connectivity verification |
+| [User & OU Management](labs/02-user-and-ou-management.md) | User provisioning, OUs, account attributes, PowerShell automation, LDAP search |
+| [Groups & Delegated Administration](labs/03-groups-and-permissions.md) | Security groups, nested groups, PowerShell membership management, delegated permissions |
 
-1. [Windows Server and Active Directory Environment Build](labs/01-environment-build)
-2. [Active Directory User and OU Management](labs/02-user-and-ou-management)
-3. [Security Groups and Permissions](labs/03-groups-and-permissions)
-4. [Group Policy Administration](labs/04-group-policy)
-5. [Account Lifecycle Management](labs/05-account-lifecycle)
-6. [Windows and Network Troubleshooting](labs/06-troubleshooting)
-7. [IT Support Documentation](documentation)
-8. [Lab Diagrams](diagrams)
-9. [Lab Screenshots](Screenshots)
+Supporting evidence is stored in the [`Screenshots`](Screenshots) folder.
 
-Additional project pages will be added as the lab progresses.
+## Skills demonstrated
 
-## What I Have Completed
+### Windows / IT support
 
-- Created a Windows Server 2019 domain controller
-- Installed Active Directory Domain Services
-- Created an Active Directory forest and domain
-- Configured DNS and DHCP
-- Created domain user accounts
-- Joined a Windows 10 workstation to the domain
-- Installed Windows Server 2022
-- Joined the Windows Server 2022 member server to the domain
-- Verified workstation and server computer accounts in Active Directory
-- Configured and verified internal network connectivity
-- Began Microsoft Active Directory administration exercises
+- Windows Server and client configuration
+- Domain joins and computer-account verification
+- IPv4, DNS, DHCP, and connectivity troubleshooting
+- Windows administrative tools
+- Technical verification and documentation
 
-## Project Goals
+### Active Directory / IAM
 
-The goals of this project are to:
+- Active Directory Domain Services deployment
+- User and computer account management
+- Organizational Unit design
+- Security groups and nested membership
+- Account expiration and attribute management
+- Password-management delegation
+- Least-privilege administration
+- PowerShell-based provisioning and group assignment
 
-- Develop practical Windows support and administration skills
-- Understand how Active Directory components work together
-- Practice common help-desk and systems-administration tasks
-- Connect technical configurations to cybersecurity controls
-- Build clear technical documentation
-- Demonstrate troubleshooting ability through real lab problems
-- Prepare for IT support, IAM, systems administration, and cybersecurity responsibilities
+### Networking
 
-## Security and Privacy Notice
+- VMware virtual networking
+- Internal subnet configuration
+- DNS and DHCP integration with Active Directory
+- `ipconfig` and `nslookup` verification
+- Name-resolution and domain-connectivity troubleshooting
 
-This repository contains only lab information.
+## Current status
 
-No production systems, real employee information, passwords, private keys, authentication tokens, or confidential organizational data are included.
+### Working / completed
 
-## Project Status
+- [x] Windows Server 2019 domain controller
+- [x] Active Directory forest and domain
+- [x] DNS and DHCP configuration
+- [x] Windows 10 domain-joined client
+- [x] Windows Server 2022 domain-joined member server
+- [x] Bulk user provisioning with PowerShell
+- [x] Organizational Unit and user-attribute management
+- [x] Security-group nesting and membership management
+- [x] Limited delegated administration
 
-This project is currently in progress. New exercises, screenshots, troubleshooting cases, and documentation will be added as the Active Directory lab develops.
+### Planned / in progress
+
+- [ ] Group Policy exercises
+- [ ] Account lifecycle / onboarding-offboarding workflow
+- [ ] Structured troubleshooting cases
+- [ ] Additional support documentation as the lab expands
+
+## Repository structure
+
+```text
+windows-it-support-ad-lab/
+├── README.md
+├── labs/
+│   ├── 01-environment-build.md
+│   ├── 02-user-and-ou-management.md
+│   └── 03-groups-and-permissions.md
+└── Screenshots/
+```
+
+The repository intentionally stays small: only completed work gets its own lab document. Planned work is listed in the roadmap rather than represented by empty placeholder files.
+
+## Security and privacy
+
+This repository contains lab-only information. No production systems, real employee records, passwords, private keys, authentication tokens, or confidential organizational data are included.
