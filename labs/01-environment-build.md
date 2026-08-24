@@ -2,71 +2,118 @@
 
 ## Overview
 
-Built a small Windows domain environment in VMware Workstation to practice Active Directory administration, Windows support, networking, and troubleshooting.
+Built a small Windows domain environment in VMware Workstation to practice Active Directory administration, Windows support, networking, routing, and troubleshooting.
 
-The environment includes a domain controller, Windows 10 workstation, and Windows Server 2022 member server.
+The environment includes a Windows Server 2019 domain controller with two network interfaces, a Windows 10 workstation, and a Windows Server 2022 member server.
 
-## Lab Environment
+## Lab environment
 
 | System | Operating System | Role |
 |---|---|---|
-| Domain Controller | Windows Server 2019 | AD DS, DNS, DHCP, and routing |
+| Domain Controller | Windows Server 2019 | AD DS, DNS, DHCP, authentication, RRAS/NAT routing |
 | CLIENT1 | Windows 10 | Domain-joined workstation |
 | MBR-SRV01 | Windows Server 2022 | Domain-joined member server |
 
-## Network Configuration
+## Network design
 
-- Internal network: VMware LAN Segment
-- Subnet: `172.16.0.0/24`
-- Domain controller: `172.16.0.1`
-- DNS and DHCP provided by the domain controller
-- Domain members receive network settings through DHCP
-- Domain: `domian.local`
+The domain controller connects the isolated Active Directory network to VMware's NAT network.
 
-## Work Completed
+| Component | Configuration |
+|---|---|
+| External DC interface | Connected to VMware NAT |
+| Internal DC interface | `172.16.0.1/24`, no default gateway |
+| Internal network | VMware LAN Segment |
+| DHCP scope | `172.16.0.100`–`172.16.0.200` |
+| Client default gateway | `172.16.0.1` |
+| Client DNS server | `172.16.0.1` |
+| Domain | `domian.local` |
 
-- Created and configured Windows virtual machines
-- Installed Windows Server 2019 and Windows Server 2022
+```text
+Internet
+   |
+VMware NAT
+   |
+External NIC
+   |
+Windows Server 2019 DC
+AD DS / DNS / DHCP / RRAS NAT
+   |
+Internal NIC: 172.16.0.1
+   |
+VMware LAN Segment
+   |----------------------|
+ CLIENT1              MBR-SRV01
+```
+
+## Work completed
+
+- Created and configured the Windows virtual machines in VMware Workstation
+- Configured two network interfaces on the domain controller: external VMware NAT and internal LAN Segment
+- Assigned `172.16.0.1/24` to the domain controller's internal interface without a default gateway
 - Installed Active Directory Domain Services
-- Created a new Active Directory forest and domain
+- Created the `domian.local` Active Directory forest and domain
+- Configured DNS on the domain controller
+- Configured a DHCP scope for `172.16.0.100`–`172.16.0.200`
+- Configured DHCP clients to use `172.16.0.1` as both their default gateway and DNS server
+- Configured Routing and Remote Access (RRAS) for NAT between the internal LAN and external VMware NAT interface
+- Joined CLIENT1 to the domain
+- Joined MBR-SRV01 to the domain
+- Verified the resulting computer accounts in Active Directory
 
-### DNS Configuration
+## Routing and NAT
+
+Routing was configured through Windows Server **Routing and Remote Access**:
+
+```text
+Routing and Remote Access
+    -> Configure and Enable Routing and Remote Access
+    -> Network Address Translation (NAT)
+    -> Select the external "internet" interface as the public interface
+```
+
+This allows systems on the isolated `172.16.0.0/24` network to use the domain controller as their router while keeping the internal Active Directory network separate from the VMware NAT network.
+
+## DNS configuration
 
 ![DNS configuration](/Screenshots/dns-config.jpg)
 
-### DHCP Configuration
+## DHCP configuration
 
 ![DHCP configuration](/Screenshots/dhcp-config.jpg)
 
-### Active Directory Domain and Computer Accounts
+## Active Directory domain and computer accounts
 
 ![Active Directory domain and computer accounts](/Screenshots/ad-comp-con.jpg)
-### CLIENT1 Domain Membership
+
+## CLIENT1 domain membership
 
 ![CLIENT1 domain membership](/Screenshots/Client01.jpg)
 
-### MBR-SRV01 Domain Membership
+## MBR-SRV01 domain membership
 
 ![MBR-SRV01 domain membership](/Screenshots/Mbr-srv.jpg)
 
 ## Verification
 
-The environment was verified using:
+The environment was checked using multiple layers rather than relying on one successful configuration screen:
 
-- `ipconfig /all`
-- `nslookup domian.local`
-- Domain sign-in testing
-- Active Directory Users and Computers
-- Windows System Properties
+- `ipconfig /all` to verify client addressing, DNS, and default-gateway configuration
+- `nslookup domian.local` to verify domain name resolution
+- domain sign-in testing to verify authentication from a joined system
+- Active Directory Users and Computers to verify user and computer objects
+- Windows System Properties to verify domain membership
+- Routing and Remote Access to verify the NAT/routing configuration
 
-## Skills Demonstrated
+## Skills demonstrated
 
 - Windows Server administration
 - Active Directory Domain Services
-- DNS and DHCP
+- DNS and DHCP configuration
+- Windows Server RRAS and NAT
+- Dual-NIC server networking
+- Default-gateway and DNS configuration through DHCP
 - Windows domain joins
-- Computer account management
-- VMware networking
-- IPv4 configuration
-- Basic Windows and network troubleshooting
-
+- Computer-account management
+- VMware virtual networking
+- IPv4 subnetting and addressing
+- Windows and network troubleshooting
