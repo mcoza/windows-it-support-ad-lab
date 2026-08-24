@@ -1,29 +1,24 @@
+# Active Directory Security Groups & Delegated Administration
 
-# Active Directory Security Groups and Delegated Administration
+## Goal
 
-## Overview
+Practice group-based access management and limited administrative delegation in Active Directory.
 
-Created and managed Active Directory security groups to organize user accounts, simplify membership management, and delegate limited administrative permissions.
+## Work completed
 
-## Work Completed
-
- Created security groups for Sydney, Melbourne, and Brisbane contractor accounts
-- Added each contractor account to its matching location-based group
-- Created `GG_Australia_Contractors` to manage all Australian contractor groups together
-- Nested the Sydney, Melbourne, and Brisbane contractor groups inside `GG_Australia_Contractors`
+- Created location-based security groups for Sydney, Melbourne, and Brisbane contractor accounts
+- Added each contractor account to its matching group
+- Created `GG_Australia_Contractors` and nested the three location groups beneath it
 - Created `GG_Bulk_Users` for PowerShell-provisioned accounts
-- Used PowerShell to add accounts from the `_USERS` Organizational Unit to `GG_Bulk_Users`
-- Created `Sydney Administrators`, `Melbourne Administrators`, and `Brisbane Administrators`
-- Added each contractor account to its matching city administrator group
-- Added all three contractor accounts to the built-in `Protected Users` group
-- Delegated password-reset and forced password-change permissions over each matching city Organizational Unit
+- Used PowerShell to add users from the `_USERS` Organizational Unit to `GG_Bulk_Users`
+- Created city administrator groups for Sydney, Melbourne, and Brisbane
+- Added the matching contractor account to each city administrator group
+- Added the three contractor accounts to the built-in `Protected Users` group
+- Delegated password-reset and forced-password-change permissions over the matching city Organizational Units
 
+## Contractor group structure
 
-## Contractor Group Structure
-
-The manually created contractor accounts were organized into location-based security groups.
-
-```
+```text
 GG_Australia_Contractors
 ├── GG_Sydney_Contractors
 │   └── SydneyContractor
@@ -32,78 +27,63 @@ GG_Australia_Contractors
 └── GG_Brisbane_Contractors
     └── BrisbaneContractor
 ```
-## PowerShell Group Assignment
 
-PowerShell was used to add the user accounts located directly inside the `_USERS` Organizational Unit to the `GG_Bulk_Users` security group.
+The nested structure provides one broader contractor group while preserving location-specific membership.
+
+## PowerShell group assignment
+
+PowerShell was used to collect the users located directly inside the `_USERS` OU and add them to `GG_Bulk_Users`.
 
 ```powershell
-# Loads the Active Directory PowerShell commands
 Import-Module ActiveDirectory
 
-# Gets all user accounts directly inside the _USERS OU
 $Users = Get-ADUser `
     -SearchBase "OU=_USERS,DC=domian,DC=local" `
     -SearchScope OneLevel `
     -Filter *
 
-# Adds the accounts to the GG_Bulk_Users security group
 Add-ADGroupMember `
     -Identity "GG_Bulk_Users" `
     -Members $Users
-#Display Successful user addition
+
 $Users.Count
-
 ```
 
+## Delegated administration
+
+Limited password-management permissions were delegated at the OU level rather than granting broad domain-administrator privileges.
+
+```text
+Sydney OU
+└── Sydney Administrators
+    └── SydneyContractor
+
+Melbourne OU
+└── Melbourne Administrators
+    └── MelbourneContractor
+
+Brisbane OU
+└── Brisbane Administrators
+    └── BrisbaneContractor
 ```
-# Delegated Administration
-    The delegated permissions allowed group members to:
-    Reset user passwords
-    Require a password change at the next sign-in
-Sydney Administrators
-└── SydneyContractor
 
-Melbourne Administrators
-└── MelbourneContractor
+Delegated permissions covered:
 
-Brisbane Administrators
-└── BrisbaneContractor
-```
+- resetting user passwords
+- requiring a password change at the next sign-in
 
-## Skills Demonstrated
+## Why this matters
 
-* Active Directory security-group administration
-* User and group membership management
-* PowerShell group assignment
-* Nested security groups
-* Organizational Unit delegation
-* Password-management delegation
-* Least-privilege administration
+This lab connects Active Directory group administration to two practical concepts:
 
-## Screenshots
+- **group-based access management** — manage access through groups instead of assigning permissions individually
+- **least privilege** — delegate only the administrative capability required for a specific scope
 
-### Bulk User Group Membership
+## Skills demonstrated
 
-Bulk-created accounts were added to the `GG_Bulk_Users` security group.
-
-![Bulk user group membership](/Screenshots/bulk-user-group-membership.jpg)
-
-### Contractor Security Groups
-
-Contractor accounts were organized using location-based security groups.
-
-![Contractor security groups](/Screenshots/contractor-security-groups.jpg)
-
-### Nested Group Membership
-
-Location-based contractor groups were added to a broader contractor security group.
-
-![Nested contractor groups](/Screenshots/nested-contractor-groups.jpg)
-
-### Delegated Sydney Administration
-
-Limited password-management permissions were delegated for the Sydney Organizational Unit.
-
-![Sydney delegated administration](/Screenshots/sydney-delegated-administration.jpg)
-
-
+- Active Directory security-group administration
+- Nested group membership
+- PowerShell-based membership management
+- Organizational Unit delegation
+- Password-management delegation
+- Least-privilege administration
