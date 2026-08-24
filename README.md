@@ -36,7 +36,7 @@ VMware LAN Segment
 ## Documented hands-on work
 
 ### [Environment Build](labs/01-environment-build.md)
-Built the domain environment, configured AD DS/DNS/DHCP and RRAS/NAT, joined a Windows 10 client and Windows Server 2022 member server, and verified connectivity/domain membership.
+Built the domain environment, configured AD DS/DNS/DHCP and RRAS/NAT, joined a Windows 10 client and Windows Server 2022 member server, and verified connectivity and domain membership.
 
 ### [User & OU Management](labs/02-user-and-ou-management.md)
 Created and organized Active Directory users and OUs, automated bulk user provisioning with PowerShell, configured account attributes, and verified objects with Active Directory tools and LDAP search.
@@ -55,10 +55,6 @@ Supporting screenshots are stored in [`Screenshots/`](Screenshots).
 - account attribute management and LDAP filtering
 - IPv4 addressing and virtual networking
 - connectivity, DNS, and domain troubleshooting
-
-## Next lab areas
-
-Group-based permissions/delegation, Group Policy, and account lifecycle workflows are useful next extensions, but they are not presented here as completed work until they are verified in the lab.
 
 ## Note on the domain name
 
